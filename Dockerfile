@@ -1,0 +1,13 @@
+#BASE IMAGE
+
+#WORKDIR 
+
+#COPY 
+
+
+#EXPOSE 
+
+#RUN
+
+#CMD 
+
