@@ -1,3 +1,5 @@
 flask
-requests
-gunicorn
+openmeteo-requests
+requests-cache
+retry-requests
+numpy
