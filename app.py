@@ -1,10 +1,7 @@
 from flask import Flask, request, redirect, session
-
 from air_quality import get_air_quality_data
 
 app = Flask(__name__)
-
-app.secret_key = "supersecret"
 
 # SIMPLE USER LOGIN
 USERNAME = "admin"
