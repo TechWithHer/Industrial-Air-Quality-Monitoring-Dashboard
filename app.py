@@ -14,7 +14,7 @@ PROJECT_NAME = "Industrial Environmental Risk Monitoring Dashboard"
 COMPANY_LOGO = "https://via.placeholder.com/180x60.png?text=Company+Logo"
 
 # Replace with your actual AQI API URL
-AQI_API_URL = "YOUR_API_ENDPOINT"
+AQI_API_URL = "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=28.6214&longitude=77.2148&hourly=pm10,pm2_5,carbon_monoxide,carbon_dioxide,nitrogen_dioxide,sulphur_dioxide,dust,ammonia,methane,grass_pollen&current=pm10,pm2_5,carbon_monoxide,us_aqi,nitrogen_dioxide,sulphur_dioxide,ozone"
 
 # Replace with your Grafana datasource / exporter endpoint
 GRAFANA_DATA_ENDPOINT = "YOUR_GRAFANA_EXPORTER_ENDPOINT"
