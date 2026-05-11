@@ -1,17 +1,28 @@
-from flask import Flask, request, redirect, session
+from flask import Flask, request, redirect
 from air_quality import get_air_quality_data
 
 app = Flask(__name__)
 
-# SIMPLE USER LOGIN
+# ==========================================
+# SIMPLE LOGIN CONFIG
+# ==========================================
+
 USERNAME = "admin"
 PASSWORD = "admin123"
 
-@app.route("/", methods=["GET", "POST"])
+# Fake login state
+logged_in = False
 
+
+# ==========================================
+# LOGIN PAGE
+# ==========================================
+
+@app.route("/", methods=["GET", "POST"])
 def login():
 
-    # LOGIN CHECK
+    global logged_in
+
     if request.method == "POST":
 
         username = request.form.get("username")
@@ -19,7 +30,7 @@ def login():
 
         if username == USERNAME and password == PASSWORD:
 
-            session["logged_in"] = True
+            logged_in = True
 
             return redirect("/dashboard")
 
@@ -43,15 +54,23 @@ def login():
 
     """
 
-@app.route("/dashboard")
 
+# ==========================================
+# DASHBOARD
+# ==========================================
+
+@app.route("/dashboard")
 def dashboard():
 
-    if not session.get("logged_in"):
+    global logged_in
+
+    if not logged_in:
 
         return redirect("/")
 
     data = get_air_quality_data()
+
+    latest = data.iloc[-1]
 
     return f"""
 
@@ -62,29 +81,41 @@ def dashboard():
     <h2>Live Air Quality Data</h2>
 
     <ul>
-        <li>PM10: {data['pm10']}</li>
-        <li>PM2.5: {data['pm2_5']}</li>
-        <li>Carbon Monoxide: {data['carbon_monoxide']}</li>
-        <li>Carbon Dioxide: {data['carbon_dioxide']}</li>
-        <li>Sulphur Dioxide: {data['sulphur_dioxide']}</li>
-        <li>Methane: {data['methane']}</li>
-        <li>Dust: {data['dust']}</li>
-        <li>Total Elementary Carbon: {data['total_elementary_carbon']}</li>
+        <li>PM10: {latest['pm10']}</li>
+        <li>PM2.5: {latest['pm2_5']}</li>
+        <li>Carbon Monoxide: {latest['carbon_monoxide']}</li>
+        <li>Carbon Dioxide: {latest['carbon_dioxide']}</li>
+        <li>Sulphur Dioxide: {latest['sulphur_dioxide']}</li>
+        <li>Methane: {latest['methane']}</li>
+        <li>Dust: {latest['dust']}</li>
+        <li>Total Elementary Carbon: {latest['total_elementary_carbon']}</li>
     </ul>
 
     """
 
-@app.route("/logout")
 
+# ==========================================
+# LOGOUT
+# ==========================================
+
+@app.route("/logout")
 def logout():
 
-    session.clear()
+    global logged_in
+
+    logged_in = False
 
     return redirect("/")
+
+
+# ==========================================
+# MAIN
+# ==========================================
 
 if __name__ == "__main__":
 
     app.run(
-    host="0.0.0.0",
-    port=5000,
-    debug=True)
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
