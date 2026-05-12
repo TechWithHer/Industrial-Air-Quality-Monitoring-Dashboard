@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+
+  - job_name: 'industrial-air-quality'
+
+    static_configs:
+      - targets: ['air-quality-dashboard:5000']
