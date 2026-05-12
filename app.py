@@ -1,16 +1,16 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 from air_quality import get_air_quality_data
+from datetime import datetime
 
 app = Flask(__name__)
 
 # ==========================================
-# SIMPLE LOGIN CONFIG
+# LOGIN CONFIG
 # ==========================================
 
 USERNAME = "admin"
 PASSWORD = "admin123"
 
-# Fake login state
 logged_in = False
 
 
@@ -23,6 +23,8 @@ def login():
 
     global logged_in
 
+    error = None
+
     if request.method == "POST":
 
         username = request.form.get("username")
@@ -31,28 +33,12 @@ def login():
         if username == USERNAME and password == PASSWORD:
 
             logged_in = True
-
             return redirect("/dashboard")
 
-    return """
+        else:
+            error = "Invalid username or password"
 
-    <h2>Login</h2>
-
-    <form method="POST">
-
-        <input name="username" placeholder="Username">
-
-        <br><br>
-
-        <input name="password" type="password" placeholder="Password">
-
-        <br><br>
-
-        <button type="submit">Login</button>
-
-    </form>
-
-    """
+    return render_template("login.html", error=error)
 
 
 # ==========================================
@@ -65,33 +51,19 @@ def dashboard():
     global logged_in
 
     if not logged_in:
-
         return redirect("/")
 
     data = get_air_quality_data()
 
     latest = data.iloc[-1]
 
-    return f"""
+    current_time = datetime.now().strftime("%d %B %Y | %I:%M:%S %p")
 
-    <h1>Industrial Environmental Dashboard</h1>
-
-    <a href='/logout'>Logout</a>
-
-    <h2>Live Air Quality Data</h2>
-
-    <ul>
-        <li>PM10: {latest['pm10']}</li>
-        <li>PM2.5: {latest['pm2_5']}</li>
-        <li>Carbon Monoxide: {latest['carbon_monoxide']}</li>
-        <li>Carbon Dioxide: {latest['carbon_dioxide']}</li>
-        <li>Sulphur Dioxide: {latest['sulphur_dioxide']}</li>
-        <li>Methane: {latest['methane']}</li>
-        <li>Dust: {latest['dust']}</li>
-        <li>Total Elementary Carbon: {latest['total_elementary_carbon']}</li>
-    </ul>
-
-    """
+    return render_template(
+        "dashboard.html",
+        latest=latest,
+        current_time=current_time
+    )
 
 
 # ==========================================

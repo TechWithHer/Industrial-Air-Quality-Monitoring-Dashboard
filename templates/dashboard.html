@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Industrial Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h1>Industrial Environmental Dashboard</h1>
+
+        <div class="top-right">
+
+            <p>{{ current_time }}</p>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard-container">
+
+        <div class="card">
+            <h2>PM10</h2>
+            <p>{{ latest['pm10'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>PM2.5</h2>
+            <p>{{ latest['pm2_5'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Carbon Monoxide</h2>
+            <p>{{ latest['carbon_monoxide'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Carbon Dioxide</h2>
+            <p>{{ latest['carbon_dioxide'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Sulphur Dioxide</h2>
+            <p>{{ latest['sulphur_dioxide'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Methane</h2>
+            <p>{{ latest['methane'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Dust</h2>
+            <p>{{ latest['dust'] }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Total Elementary Carbon</h2>
+            <p>{{ latest['total_elementary_carbon'] }}</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
